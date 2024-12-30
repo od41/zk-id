@@ -1,4 +1,5 @@
-import webProofProver from "../../out/WebProofProver.sol/WebProofProver";
+import webProofProver from "../../out/WebProofProver.sol/WebProofProver.json";
+import { type Abi } from "viem";
 
 import { foundry } from "viem/chains";
 
@@ -18,7 +19,7 @@ import {
 
 import { createContext } from "@vlayer/sdk/config";
 
-import webProofVerifier from "../../out/WebProofVerifier.sol/WebProofVerifier";
+import webProofVerifier from "../../out/WebProofVerifier.sol/WebProofVerifier.json";
 import { Hex } from "viem";
 
 const context: {
@@ -43,7 +44,7 @@ export async function setupRequestProveButton(element: HTMLButtonElement) {
     const webProof = await provider.getWebProof({
       proverCallCommitment: {
         address: import.meta.env.VITE_PROVER_ADDRESS,
-        proverAbi: webProofProver.abi,
+        proverAbi: webProofProver.abi as Abi,
         chainId: foundry.id,
         functionName: "main",
         commitmentArgs: ["0x"],
@@ -83,7 +84,7 @@ export const setupVProverButton = (element: HTMLButtonElement) => {
     const hash = await vlayer.prove({
       address: import.meta.env.VITE_PROVER_ADDRESS,
       functionName: "main",
-      proverAbi: webProofProver.abi,
+      proverAbi: webProofProver.abi as Abi,
       args: [
         {
           webProofJson: JSON.stringify(webProof),

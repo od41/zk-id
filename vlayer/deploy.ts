@@ -1,6 +1,6 @@
-import proverSpec from "../out/WebProofProver.sol/WebProofProver";
+import proverSpec from "../out/WebProofProver.sol/WebProofProver.json";
 // import verifierSpec from "../out/WebProofVerifier.sol/WebProofVerifier";
-import verifierSpec from "../out/zkVerifiedEscrow.sol/zkVerifiedEscrow";
+import verifierSpec from "../out/ZkVerifiedEscrow.sol/ZkVerifiedEscrow.json";
 import {
   deployVlayerContracts,
   writeEnvVariables,

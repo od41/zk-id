@@ -1,9 +1,9 @@
-import { createVlayerClient } from "@vlayer/sdk";
-import proverSpec from "../out/WebProofProver.sol/WebProofProver";
-import verifierSpec from "../out/WebProofVerifier.sol/WebProofVerifier";
+import { createVlayerClient, type ContractSpec } from "@vlayer/sdk";
+import proverSpec from "../out/WebProofProver.sol/WebProofProver.json";
+import verifierSpec from "../out/WebProofVerifier.sol/WebProofVerifier.json";
 import tls_proof from "./tls_proof.json";
 import * as assert from "assert";
-import { encodePacked, isAddress, keccak256 } from "viem";
+import { encodePacked, isAddress, keccak256, parseGwei } from "viem";
 
 import {
   getConfig,
@@ -16,8 +16,8 @@ const notaryPubKey =
   "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAExpX/4R4z40gI6C/j9zAM39u58LJu\n3Cx5tXTuqhhu/tirnBi5GniMmspOTEsps4ANnPLpMmMSfhJ+IFHbc3qVOA==\n-----END PUBLIC KEY-----\n";
 
 const { prover, verifier } = await deployVlayerContracts({
-  proverSpec,
-  verifierSpec,
+  proverSpec: proverSpec as ContractSpec,
+  verifierSpec: verifierSpec as ContractSpec,
 });
 
 writeEnvVariables(".env", {
@@ -28,6 +28,9 @@ writeEnvVariables(".env", {
 const config = getConfig();
 const { chain, ethClient, account, proverUrl, confirmations } =
   await createContext(config);
+
+console.log("proverUrl", proverUrl);
+console.log('config', config)
 
 const twitterUserAddress = account.address;
 const vlayer = createVlayerClient({
@@ -51,6 +54,7 @@ async function testSuccessProvingAndVerification() {
         webProofJson: JSON.stringify(webProof),
       },
       twitterUserAddress,
+      parseGwei("10"),
     ],
     chainId: chain.id,
   });
